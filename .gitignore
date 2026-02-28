@@ -1,6 +1,18 @@
-node_modules
+# Python
+mcp/venv/
+__pycache__/
+*.pyc
+*.pyo
 .env
+
+# Node
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# ChromaDB
+chroma_db/
+
+# Misc
 .DS_Store
-# Keep generated diagrams
-!docs/images/*.png
-!docs/images/*.svg
+*.log
