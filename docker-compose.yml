@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ${POSTGRES_CONTAINER:-sushi-rag-app-postgres}
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sushi_rag_app_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sushi_rag_app_password}
+      POSTGRES_DB: ${POSTGRES_DB:-sushi_rag_app_orders}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - sushi-rag-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sushi_rag_app_user} -d ${POSTGRES_DB:-sushi_rag_app_orders}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: sushi-rag-app-chromadb
+    restart: always
+    ports:
+      - "${CHROMA_PORT:-8000}:8000"
+    volumes:
+      - chromadb-data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    # Health check disabled - ChromaDB responds on port 8000 when ready
+    # The app will connect when it's available
+
+volumes:
+  sushi-rag-postgres-data:
+  chromadb-data:
+
