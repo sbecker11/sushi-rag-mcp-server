@@ -16,3 +16,5 @@ chroma_db/
 # Misc
 .DS_Store
 *.log
+mcp/claude_desktop_config.json
+.cursor/mcp.json
